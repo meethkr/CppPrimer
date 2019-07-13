@@ -1,0 +1,32 @@
+vector<int>::size_type var1;
+vector<string>::iterator var2;
+string::const_iterator var3;  --> var3 can read but not change items in the string
+
+
+const int &a = c; --> right, this means that this particular reference cannot be used to change the value of c.
+int &const a --> wrong: there is no such thing as a high level const reference. references are already immutable
+
+const int *a = &b; --> low level const pointer. means a points to b but you cannot use a to modify b. *a = 3; will throw error
+int *const a = &d; --> high level const pointer. means a cannot be changed to point to anything else. a = &e; will throw error
+
+begin() and end() return 'iterator's when use on containers (vectors, strings etc.) and return 'const_iterator's when used on const containers (const vectors etc.)
+sometimes we want to return a const_iterator to a vector eventhough that vector is not const. So we can use cbegin() and cend().
+
+vector<int> ivec(10, 23);
+vector<int>::const_iterator cit = ivec.cbegin();        --> const iterator, can be used to read ivec, but not write to
+auto it = ivec.begin();                                 --> normal iterator, can be used to modify ivec
+
+const vector<int> ivec(11, 12);
+auto it = ivec.begin();                                 --> const iterator, begin() returns const_iterator if the vector is const
+
+. has a higher precedence than * (Dereference operator), so to apply a member function on an iterator content, do :
+vector<string> svec(10, "hi");
+auto it = svec.begin();
+(*it).empty();
+
+if the size of the container changes, then the iterator becomes invalid. Do not change the size of a container in a loop run by iterators.
+
+iterator + n --> advances iterator n times fwd
+iterator - n --> "" backward
+
+iterator1 - iterator2 --> distance difference between two, only if they point to the same container
